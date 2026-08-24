@@ -1,0 +1,54 @@
+<%- include('../includes/head.ejs') %>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+  <%- include('../includes/navigation.ejs') %>
+  <main>
+    <h1>Checkout</h1>
+
+    <ul>
+      <% products.forEach(p => { %>
+        <li>
+          <%= p.productId.title %> —
+          <%= p.quantity %> x
+          $<%= p.productId.price %>
+        </li>
+      <% }) %>
+    </ul>
+
+    <h2>Total: $<%= totalSum.toFixed(2) %></h2>
+
+    <button id="order-btn" class="btn" data-amount="<%= totalSum * 100 %>" data-email="<%= userEmail %>" data-key="<%= paystackPublicKey %>">
+      Order Now
+    </button>
+  </main>
+
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script>
+    document.getElementById('order-btn').addEventListener('click', function() {
+      var btn = document.getElementById('order-btn');
+      var amount = parseInt(btn.dataset.amount);
+      var email = btn.dataset.email;
+      var key = btn.dataset.key;
+
+      var handler = PaystackPop.setup({
+        key: key,
+        email: email,
+        amount: amount,
+        currency: 'NGN',
+        callback: function(response) {
+          window.location.href = '/checkout/success?reference=' + response.reference;
+        },
+        onCancel: function() {
+          window.location.href = '/checkout/cancel';
+        }
+      });
+      handler.openIframe();
+    });
+  </script>
+
+  <%- include('../includes/end.ejs') %>
+</body>
+</html>

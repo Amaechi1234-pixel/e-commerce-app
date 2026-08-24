@@ -1,0 +1,66 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+    
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <% if(orders.length <= 0) { %>
+            <div class="centered">
+                <h1>No Orders Yet!</h1>
+                <a href="/products" class="btn">Start Shopping</a>
+            </div>
+        <% } else { %>
+            <section class="orders">
+                <h1 class="orders__title">Your Orders</h1>
+                <% orders.forEach(order => { %>
+                    <div class="order-card">
+                        
+                        <!-- Order Header -->
+                        <div class="order-card__header">
+                            <span class="order-card__id">
+                                Order <strong>#<%= order._id.toString().slice(-8).toUpperCase() %></strong>
+                            </span>
+                            <a href="/orders/<%= order._id %>" class="btn btn--small">View Invoice</a>
+                        </div>
+
+                        <!-- Order Items -->
+                        <ul class="order-card__items">
+                            <% if (order.products && order.products.length > 0) { %>
+                                <% order.products.forEach(p => { %>
+                                    <li class="order-card__item">
+                                        <img 
+                                            src="<%= p.product.imageUrl %>" 
+                                            alt="<%= p.product.title %>" 
+                                            class="order-card__img"
+                                        >
+                                        <div class="order-card__info">
+                                            <span class="order-card__name"><%= p.product.title %></span>
+                                            <span class="order-card__meta">Qty: <%= p.quantity %> &nbsp;|&nbsp; $<%= p.product.price %> each</span>
+                                        </div>
+                                        <span class="order-card__subtotal">
+                                            $<%= (p.quantity * p.product.price).toFixed(2) %>
+                                        </span>
+                                    </li>
+                                <% }); %>
+                            <% } else { %>
+                                <li>No products in this order.</li>
+                            <% } %>
+                        </ul>
+
+                        <!-- Order Total -->
+                        <div class="order-card__footer">
+                            <span>Total:</span>
+                            <strong>
+                                $<%= order.products.reduce((sum, p) => sum + (p.quantity * p.product.price), 0).toFixed(2) %>
+                            </strong>
+                        </div>
+
+                    </div>
+                <% }); %>
+            </section>
+        <% } %>
+    </main>
+    <%- include('../includes/end.ejs') %>
+</body>

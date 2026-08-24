@@ -1,0 +1,128 @@
+const path = require("path");
+const fs = require("fs");
+const https = require("https");
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const session = require("express-session");
+const mongoDbStore = require("connect-mongodb-session")(session);
+const csrf = require("csurf");
+const flash = require("connect-flash");
+require("dotenv").config();
+const helmet = require("helmet");
+const multer = require("./middleware/multer-config");
+const morgan = require("morgan");
+
+const User = require("./models/user");
+
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const authRoutes = require("./routes/auth");
+
+const errorController = require("./controllers/404");
+
+const MONGODB_URI = process.env.MONGODB_URI;
+const app = express();
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+const imagesDir = path.join(__dirname, "images");
+if (!fs.existsSync(imagesDir)) {
+  fs.mkdirSync(imagesDir);
+}
+
+const store = new mongoDbStore({
+  uri: MONGODB_URI,
+  collection: "sessions",
+});
+
+const csrfProtection = csrf();
+
+const privateKey = fs.readFileSync("server.key");
+const certificate = fs.readFileSync("server.cert");
+
+// --- Core Middleware ---
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer.single("image")); 
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/images", express.static(imagesDir));
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { flags: "a" });
+app.use(helmet()); 
+app.use(morgan("combined", { stream: accessLogStream }));
+
+
+// --- Session & Security ---
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "your-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
+    store: store,
+  }),
+);
+app.use(csrfProtection);
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn || false;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
+// --- Attach user to request if logged in ---
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user)
+    .then((user) => {
+      if (!user) return next();
+      req.user = user;
+      next();
+    })
+    .catch((err) => {
+      console.log("Error fetching user from session:", err);
+      next();
+    });
+});
+
+// --- Routes ---
+app.use("/admin", adminRoutes);
+app.use(authRoutes);
+app.use(shopRoutes);
+
+app.use(errorController.get404);
+
+// --- Global Error Handler ---
+app.use((error, req, res, next) => {
+  console.error(error);
+  res.status(error.statusCode || 500).render("500", {
+    pageTitle: "Error!",
+    path: "/500",
+    errorMessage: error.message || "Internal Server Error",
+    isAuthenticated: req.session?.isLoggedIn || false,
+    csrfToken: req.csrfToken ? req.csrfToken() : "",
+  });
+});
+
+// --- Start Server ---
+const PORT = process.env.PORT || 3001;
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log("Connected to MongoDB Atlas");
+    //https.createServer({ key: privateKey, cert: certificate }, app).listen(PORT, () => {
+      app.listen(PORT, () => {
+      console.log(`Server is running on https://localhost:${PORT}`);
+    });
+  })
+
+  .catch((err) => {
+    console.log("MongoDB connection error:", err);
+  });

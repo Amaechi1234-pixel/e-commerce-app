@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/auth.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <%- include('../includes/navigation.ejs') %>
+
+    <main>  
+    <% if (errorMessage) { %>
+        <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+
+    <form class="login-form" action="/login" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-control">
+    <label for="email">Email</label>
+    <input 
+    class="<%= validationErrors.find(e => e.param === 'email') ? 'form-control--invalid' : '' %>"
+    type="email" 
+    name="email" 
+    id="email" 
+    value="<%= oldInput.email %>" />
+</div>
+        
+        <div class="form-control">
+            <label for="password">Password</label>
+            <input 
+            class="<%= validationErrors.find(e => e.param === 'password') ? 'form-control--invalid' : '' %>"
+            type="password" 
+            name="password" 
+            id="password" 
+            value="<%= oldInput.password %>" required />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Login</button>
+            <a href="/" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+    <div class="centered">
+         <a href="/reset">Reset Password</a>
+    </div>
+</main>
+
+    <%- include('../includes/end.ejs') %>
+  </body>
+</html>
