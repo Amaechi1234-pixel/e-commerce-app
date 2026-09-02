@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
+    "test": "mocha",
+    "start": "node start.js",
     "start-server": "node app.js",
     "start-dev": "nodemon app.js"
   },
@@ -39,6 +39,10 @@
     "stripe": "^22.1.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "chai": "^6.2.2",
+    "mocha": "^11.8.0",
+    "nodemon": "^3.1.10",
+    "sinon": "^22.1.0",
+    "supertest": "^7.2.2"
   }
 }

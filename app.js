@@ -1,6 +1,5 @@
 const path = require("path");
 const fs = require("fs");
-const https = require("https");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -40,8 +39,6 @@ const store = new mongoDbStore({
 
 const csrfProtection = csrf();
 
-
-// --- Core Middleware ---
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer.single("image")); 
 app.use(express.json());
@@ -52,8 +49,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"),
 app.use(helmet()); 
 app.use(morgan("combined", { stream: accessLogStream }));
 
-
-// --- Session & Security ---
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "your-secret-key",
@@ -72,7 +67,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- Attach user to request if logged in ---
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
@@ -89,14 +83,12 @@ app.use((req, res, next) => {
     });
 });
 
-// --- Routes ---
 app.use("/admin", adminRoutes);
 app.use(authRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-// --- Global Error Handler ---
 app.use((error, req, res, next) => {
   console.error(error);
   res.status(error.statusCode || 500).render("500", {
@@ -108,29 +100,4 @@ app.use((error, req, res, next) => {
   });
 });
 
-// --- Start Server ---
-const PORT = process.env.PORT || 3001;
-
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => {
-    console.log("Connected to MongoDB");
-
-    const keyPath = path.join(__dirname, "server.key");
-    const certPath = path.join(__dirname, "server.cert");
-
-    if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
-      const privateKey = fs.readFileSync(keyPath);
-      const certificate = fs.readFileSync(certPath);
-      https.createServer({ key: privateKey, cert: certificate }, app).listen(PORT, () => {
-        console.log(`Server is running on https://localhost:${PORT}`);
-      });
-    } else {
-      app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-      });
-    }
-  })
-  .catch((err) => {
-    console.log("MongoDB connection error:", err);
-  });
+module.exports = app;

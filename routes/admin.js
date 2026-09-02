@@ -8,8 +8,6 @@ const isAuth = require("../middleware/is-auth");
 
 const router = express.Router()
 
-
-// This is line 7 - it now has a valid function to call
 router.get("/add-product", [
     check("title")
         .isString()
@@ -53,5 +51,4 @@ router.post("/edit-product", [
 
 router.post("/delete-product/:productId", isAuth, adminController.postDeleteProduct);
 
-// CRITICAL: This allows app.js to use these routes
 module.exports = router;
