@@ -12,6 +12,8 @@ require("dotenv").config();
 const helmet = require("helmet");
 const multer = require("./middleware/multer-config");
 const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
 
 const User = require("./models/user");
 
@@ -44,17 +46,42 @@ app.use(multer.single("image"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(imagesDir));
+app.use(hpp());
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { flags: "a" });
-app.use(helmet()); 
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+    },
+  },
+})
+);
+
 app.use(morgan("combined", { stream: accessLogStream }));
+  
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100,
+  message: "Too many requests from this IP, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(generalLimiter);
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "your-secret-key",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24
+    },
     store: store,
   }),
 );

@@ -22,27 +22,21 @@
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.7.0",
     "express-session": "^1.19.0",
     "express-validator": "^7.3.2",
     "helmet": "^8.3.0",
+    "hpp": "^0.2.3",
     "mongodb": "^7.1.1",
     "mongoose": "^9.4.1",
     "morgan": "^1.11.0",
     "multer": "^2.2.0",
-    "mysql2": "^3.16.0",
-    "nodemailer": "^8.0.5",
-    "nodemailer-sendgrid-transport": "^0.2.0",
     "paystack": "^2.0.1",
     "pdfkit": "^0.18.0",
-    "resend": "^6.11.0",
-    "sequelize": "^6.37.7",
-    "stripe": "^22.1.0"
+    "resend": "^6.11.0"
   },
   "devDependencies": {
-    "chai": "^6.2.2",
-    "mocha": "^11.8.0",
     "nodemon": "^3.1.10",
-    "sinon": "^22.1.0",
     "supertest": "^7.2.2"
   }
 }

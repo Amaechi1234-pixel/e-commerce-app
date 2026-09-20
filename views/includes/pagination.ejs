@@ -1,37 +1,30 @@
- <section class="pagination">
-  <!-- Previous -->
+<section class="pagination">
   <% if (currentPage > 1) { %>
     <a href="/?page=<%= currentPage - 1 %>">&laquo; Prev</a>
   <% } else { %>
     <span class="disabled">&laquo; Prev</span>
   <% } %>
 
-  <!-- First page -->
-  <a href="?page=1" class="<%= currentPage === 1 ? 'active' : '' %>">1</a>
+  <a href="/?page=1" class="<%= currentPage === 1 ? 'active' : '' %>">1</a>
 
-  <!-- Ellipsis if gap after page 1 -->
   <% if (currentPage > 3) { %>
     <span class="ellipsis">&hellip;</span>
   <% } %>
 
-  <!-- Pages around current -->
   <% for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) { %>
-    <a href="?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+    <a href="/?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
   <% } %>
 
-  <!-- Ellipsis if gap before last page -->
   <% if (currentPage < totalPages - 2) { %>
     <span class="ellipsis">&hellip;</span>
   <% } %>
 
-  <!-- Last page (only if more than 1 page) -->
   <% if (totalPages > 1) { %>
-    <a href="?page=<%= totalPages %>" class="<%= currentPage === totalPages ? 'active' : '' %>"><%= totalPages %></a>
+    <a href="/?page=<%= totalPages %>" class="<%= currentPage === totalPages ? 'active' : '' %>"><%= totalPages %></a>
   <% } %>
 
-  <!-- Next -->
   <% if (currentPage < totalPages) { %>
-    <a href="?page=<%= currentPage + 1 %>">Next &raquo;</a>
+    <a href="/?page=<%= currentPage + 1 %>">Next &raquo;</a>
   <% } else { %>
     <span class="disabled">Next &raquo;</span>
   <% } %>

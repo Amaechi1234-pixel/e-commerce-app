@@ -1,4 +1,3 @@
-/* ===== Product & Grid Styles ===== */
 :root {
   --primary-color: #70d870;
   --secondary-color: #3498db;
@@ -22,7 +21,6 @@ h1 {
   color: var(--dark-color);
 }
 
-/* ===== Grid Layout ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -30,7 +28,6 @@ h1 {
   padding: 1rem 0;
 }
 
-/* ===== Product Card ===== */
 .card {
   background-color: #fff;
   border-radius: 12px;
@@ -113,7 +110,6 @@ h1 {
   margin-top: auto;
 }
 
-/* ===== Product Detail Page ===== */
 .product-detail {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -126,7 +122,8 @@ h1 {
 
 .product-detail__image {
   width: 100%;
-  height: 400px;
+  max-height: 500px;
+  min-height: 300px;
   background-color: var(--light-color);
   border-radius: 8px;
   display: flex;
@@ -139,6 +136,7 @@ h1 {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  border-radius: 4px;
 }
 
 .product-detail__info {
@@ -163,6 +161,7 @@ h1 {
   color: #666;
   line-height: 1.8;
   margin-bottom: 2rem;
+  max-width: 60ch;
 }
 
 .product-detail__actions {
@@ -208,7 +207,6 @@ h1 {
   background-color: #c0392b;
 }
 
-/* ===== Quantity Selector ===== */
 .quantity-selector {
   display: flex;
   align-items: center;
@@ -228,7 +226,6 @@ h1 {
   text-align: center;
 }
 
-/* ===== Cart Item ===== */
 .cart-item {
   display: grid;
   grid-template-columns: 100px 1fr 100px 100px;
@@ -264,7 +261,6 @@ h1 {
   font-weight: 600;
 }
 
-/* ===== Empty State ===== */
 .empty-state {
   text-align: center;
   padding: 3rem;
@@ -275,7 +271,6 @@ h1 {
   color: var(--dark-color);
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -356,8 +351,7 @@ h1 {
   padding: 1rem;
   border-top: 1px solid #eee;
   text-align: center;
-  /* width: 40%; */
-  display: flex;
+    display: flex;
   justify-content: center;
   gap: 16px;
   align-items: center;
@@ -416,7 +410,6 @@ h1 {
   margin: 0;
 }
 
-/* Orders Page */
 .orders {
     max-width: 800px;
     margin: 2rem auto;
@@ -429,7 +422,6 @@ h1 {
     color: #1a1a2e;
 }
 
-/* Order Card */
 .order-card {
     background: #fff;
     border: 1px solid #e0e0e0;
@@ -463,7 +455,6 @@ h1 {
     font-weight: bold;
 }
 
-/* Items */
 .order-card__items {
     list-style: none;
     padding: 0;
@@ -509,7 +500,6 @@ h1 {
     white-space: nowrap;
 }
 
-/* Footer */
 .order-card__footer {
     display: flex;
     justify-content: flex-end;
