@@ -154,19 +154,24 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.params.productId;
- 
+
   Product.findById(prodId)
     .then((product) => {
       if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+        res.status(404).json({ message: "Product not found" });
+        return null; 
       }
       if (product.userId.toString() !== req.user._id.toString()) {
-        return res.status(403).json({ message: "Unauthorized: You do not own this product." });
+        res.status(403).json({ message: "Unauthorized: You do not own this product." });
+        return null; 
       }
       fileHelper.deleteFile(product.imageUrl);
       return Product.deleteOne({ _id: prodId, userId: req.user._id });
     })
     .then((result) => {
+      if (result === null) {
+        return; 
+      }
       if (result.deletedCount === 0) {
         return res.status(404).json({ message: "Product could not be deleted." });
       }
