@@ -94,10 +94,10 @@ userSchema.methods.createOrder = function () {
           product: { ...p }, 
           quantity: p.quantity,
         })),
-        // Fix: Nest the user data to match your Order schema
+       
         user: {
           userId: this._id,
-          email: this.email // Make sure 'email' exists on your User model
+          email: this.email 
         }
       });
       return order.save();
@@ -122,8 +122,7 @@ userSchema.statics.findOrCreateDefault = function () {
     if (user) {
       return user;
     } else {
-      // Create a default user
-      const defaultUser = new this({
+     const defaultUser = new this({
         name: "Default User",
         email: "default@example.com",
         cart: { items: [] },

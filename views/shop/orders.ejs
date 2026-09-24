@@ -17,7 +17,6 @@
                 <% orders.forEach(order => { %>
                     <div class="order-card">
                         
-                        <!-- Order Header -->
                         <div class="order-card__header">
                             <span class="order-card__id">
                                 Order <strong>#<%= order._id.toString().slice(-8).toUpperCase() %></strong>
@@ -25,7 +24,7 @@
                             <a href="/orders/<%= order._id %>" class="btn btn--small">View Invoice</a>
                         </div>
 
-                        <!-- Order Items -->
+                        
                         <ul class="order-card__items">
                             <% if (order.products && order.products.length > 0) { %>
                                 <% order.products.forEach(p => { %>
@@ -49,7 +48,6 @@
                             <% } %>
                         </ul>
 
-                        <!-- Order Total -->
                         <div class="order-card__footer">
                             <span>Total:</span>
                             <strong>

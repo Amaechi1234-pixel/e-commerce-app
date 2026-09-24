@@ -4,7 +4,7 @@ const PDFDocument = require("pdfkit");
 const Product = require("../models/product");
 const Order = require("../models/order");
 const paystack = require('paystack')(process.env.PAYSTACK_SECRET_KEY);
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 30;
 
 exports.getProducts = (req, res, next) => {
   const page = req.query.page;
@@ -154,7 +154,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getCheckout = (req, res, next) => {
-    let products; //  declare outside so both .then() blocks can access it
+    let products;
   let total = 0;
 
   req.user
@@ -169,8 +169,8 @@ exports.getCheckout = (req, res, next) => {
       res.render("shop/checkout", {
         path: "/checkout",
         pageTitle: "Checkout",
-        products: products,   //  now accessible
-        totalSum: total,      //  use the total we calculated
+        products: products,   
+        totalSum: total,      
         paystackPublicKey: process.env.PAYSTACK_PUBLIC_KEY,
         userEmail: req.user.email,
         isAuthenticated: req.session.isLoggedIn,
@@ -245,7 +245,7 @@ exports.getOrders = (req, res, next) => {
 exports.getInvoice = (req, res, next) => {
   const orderId = req.params.orderId;
 
-  // ✅ Verify the order belongs to the logged-in user
+  
   Order.findById(orderId)
     .then((order) => {
       if (!order) {
@@ -264,7 +264,6 @@ exports.getInvoice = (req, res, next) => {
         invoiceName
       );
 
-      // ✅ Generate PDF dynamically
       const pdfDoc = new PDFDocument();
 
       res.setHeader("Content-Type", "application/pdf");
@@ -273,10 +272,9 @@ exports.getInvoice = (req, res, next) => {
         'attachment; filename="' + invoiceName + '"'
       );
 
-      pdfDoc.pipe(fs.createWriteStream(invoicePath)); // save to disk
-      pdfDoc.pipe(res);                               // stream to browser
+      pdfDoc.pipe(fs.createWriteStream(invoicePath)); 
+      pdfDoc.pipe(res);                               
 
-      // --- PDF Content ---
       pdfDoc.fontSize(26).text("Invoice", { underline: true });
       pdfDoc.moveDown();
       pdfDoc.fontSize(14).text(`Order ID: ${orderId}`);
