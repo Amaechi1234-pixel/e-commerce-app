@@ -26,6 +26,8 @@ const errorController = require("./controllers/404");
 const MONGODB_URI = process.env.MONGODB_URI;
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
