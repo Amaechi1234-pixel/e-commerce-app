@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
-const fileHelper = require("../util/file");
 const Product = require("../models/product");
 const { validationResult } = require("express-validator");
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  const imageUrl = req.file ? req.file.path : null;
   const price = req.body.price;
   const description = req.body.description;
-  console.log(imageUrl);
+  const imageFile = req.file;
+
+  let imageUrl = null;
+  if (imageFile) {
+    imageUrl = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString("base64")}`;
+  }
+
   const error = validationResult(req);
 
   if (!error.isEmpty() || !imageUrl) {
@@ -39,7 +43,7 @@ exports.postAddProduct = (req, res, next) => {
       console.log("Created Product");
       res.redirect("/admin/products");
     })
-    .catch((err) => next(new Error(err)));  
+    .catch((err) => next(new Error(err)));
 };
 
 exports.getAddProduct = (req, res, next) => {
@@ -82,7 +86,7 @@ exports.getEditProduct = (req, res, next) => {
         isAuthenticated: req.session?.isLoggedIn || false,
       });
     })
-    .catch((err) => next(new Error(err)));  
+    .catch((err) => next(new Error(err)));
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -93,8 +97,13 @@ exports.postEditProduct = (req, res, next) => {
 
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
-  const image = req.file ? req.file.path : req.body.image;
   const updatedDesc = req.body.description;
+  const imageFile = req.file;
+
+  let image = req.body.image; 
+  if (imageFile) {
+    image = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString("base64")}`;
+  }
 
   const error = validationResult(req);
   if (!error.isEmpty()) {
@@ -127,8 +136,7 @@ exports.postEditProduct = (req, res, next) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.description = updatedDesc;
-      if (image) {
-        fileHelper.deleteFile(product.imageUrl);
+      if (imageFile) {
         product.imageUrl = image;
       }
       return product.save().then(() => {
@@ -136,7 +144,7 @@ exports.postEditProduct = (req, res, next) => {
         res.redirect("/admin/products");
       });
     })
-    .catch((err) => next(new Error(err)));  
+    .catch((err) => next(new Error(err)));
 };
 
 exports.getProducts = (req, res, next) => {
@@ -159,18 +167,17 @@ exports.postDeleteProduct = (req, res, next) => {
     .then((product) => {
       if (!product) {
         res.status(404).json({ message: "Product not found" });
-        return null; 
+        return null;
       }
       if (product.userId.toString() !== req.user._id.toString()) {
         res.status(403).json({ message: "Unauthorized: You do not own this product." });
-        return null; 
+        return null;
       }
-      fileHelper.deleteFile(product.imageUrl);
       return Product.deleteOne({ _id: prodId, userId: req.user._id });
     })
     .then((result) => {
       if (result === null) {
-        return; 
+        return;
       }
       if (result.deletedCount === 0) {
         return res.status(404).json({ message: "Product could not be deleted." });
