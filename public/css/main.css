@@ -5,14 +5,20 @@
 }
 
 :root {
-  --primary-color: #70d870;
-  --secondary-color: #3498db;
-  --dark-color: #2c3e50;
-  --light-color: #ecf0f1;
-  --text-color: #333;
-  --border-color: #ddd;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --primary-color: #1f6feb;
+  --primary-dark: #174fb3;
+  --secondary-color: #0f172a;
+  --accent-color: #f59e0b;
+  --accent-soft: #fff3d9;
+  --surface-color: #ffffff;
+  --surface-muted: #f5f7fb;
+  --dark-color: #111827;
+  --light-color: #eef2f7;
+  --text-color: #334155;
+  --muted-color: #64748b;
+  --border-color: #e2e8f0;
+  --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 18px 40px rgba(15, 23, 42, 0.12);
 }
 
 html {
@@ -22,8 +28,8 @@ html {
 body {
   padding: 0;
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
+  font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
   color: var(--text-color);
   line-height: 1.6;
 }
@@ -39,18 +45,16 @@ main {
 
 .main-header {
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--secondary-color) 100%
-  );
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   padding: 0 2rem;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .main-header h1 {
@@ -85,24 +89,25 @@ main {
 }
 
 .main-header_item a {
-  color: white;
+  color: rgba(255, 255, 255, 0.82);
   text-decoration: none;
   font-weight: 500;
-  padding: 0 1.5rem;
+  padding: 0 1.1rem;
   height: 100%;
   display: flex;
   align-items: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .main-header_item a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
 }
 
 .main-header_item a.active {
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(31, 111, 235, 0.18);
   font-weight: 700;
-  border-bottom: 4px solid white;
+  border-bottom: 3px solid var(--primary-color);
   color: #fff;
 }
 
@@ -118,17 +123,17 @@ main {
   background-color: transparent;
   color: white;
   border: none;
-  padding: 0 1.5rem;
+  padding: 0 1.2rem;
   height: 100%;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.2s ease;
   font-size: 1rem;
   font-family: inherit;
 }
 
 .logout-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 h1,
@@ -161,38 +166,48 @@ p {
 
 .btn {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   text-decoration: none;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.3s ease;
-  font-size: 1rem;
+  transition: all 0.25s ease;
+  font-size: 0.96rem;
+  box-shadow: 0 10px 20px rgba(31, 111, 235, 0.18);
 }
 
 .btn:hover {
-  background-color: #52d94e;
-  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(31, 111, 235, 0.22);
 }
 
 .btn-secondary {
-  background-color: var(--secondary-color);
+  background: transparent;
+  border: 1px solid var(--dark-color);
+  color: var(--dark-color);
+  box-shadow: none;
 }
 
 .btn-secondary:hover {
-  background-color: #2980b9;
+  background: var(--dark-color);
+  color: white;
+  box-shadow: 0 10px 22px rgba(17, 24, 39, 0.15);
 }
 
 .btn-danger {
-  background-color: #e74c3c;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 10px 20px rgba(220, 38, 38, 0.18);
 }
 
 .btn-danger:hover {
-  background-color: #c0392b;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
 }
 
 .btn-block {
@@ -336,7 +351,6 @@ image {
   height: 100%;
 }
 
-
 .user-message {
   background-color: var(--light-color);
   padding: 1rem;
@@ -366,8 +380,6 @@ image {
   transition: background-color 0.3s ease;
 }
 
-.pagination a:hover 
-.pagination a:active 
-.pagination{
+.pagination a:hover .pagination a:active .pagination {
   background-color: #52d94e;
 }
