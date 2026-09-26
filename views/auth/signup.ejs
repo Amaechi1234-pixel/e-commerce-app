@@ -29,7 +29,11 @@
           class="<%= validationErrors.find(e => e.path === 'password') ? 'form-control--invalid' : '' %>"
           type="password"
            name="password" 
-           id="password" value="<%= oldInput.password %>" required />
+           id="password" value="<%= oldInput.password %>" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$" />
+          <small id="passwordRule" class="password-hint">Use letters and numbers only, with at least 6 characters.</small>
+          <% if (validationErrors.find(e => e.path === 'password')) { %>
+            <p class="error-message">Password must be alphanumeric and at least 6 characters long.</p>
+          <% } %>
         </div>
 
         <div class="form-control">
@@ -43,6 +47,30 @@
       
       </form>
     </main>
+
+    <script>
+      const passwordInput = document.getElementById('password');
+      const passwordRule = document.getElementById('passwordRule');
+
+      if (passwordInput && passwordRule) {
+        const updatePasswordRule = () => {
+          const value = passwordInput.value;
+          const isValid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(value);
+
+          passwordRule.textContent = isValid
+            ? 'Password looks good.'
+            : value.length > 0
+              ? 'Use letters and numbers only, with at least 6 characters.'
+              : 'Use letters and numbers only, with at least 6 characters.';
+
+          passwordRule.classList.toggle('password-hint--valid', isValid);
+          passwordRule.classList.toggle('password-hint--invalid', !isValid && value.length > 0);
+        };
+
+        passwordInput.addEventListener('input', updatePasswordRule);
+        updatePasswordRule();
+      }
+    </script>
 
     <%- include('../includes/end.ejs') %>
   </body>

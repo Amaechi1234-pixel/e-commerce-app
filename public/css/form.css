@@ -133,6 +133,24 @@ textarea {
   margin-top: 0.3rem;
 }
 
+.password-hint {
+  display: block;
+  color: #64748b;
+  font-size: 0.78rem;
+  margin-top: 0.45rem;
+  line-height: 1.5;
+}
+
+.password-hint--valid {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.password-hint--invalid {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
 .success-message {
   background-color: #d4edda;
   color: #155724;
