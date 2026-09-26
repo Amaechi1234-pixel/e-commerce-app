@@ -123,39 +123,43 @@ h1 {
 
 .btn {
   padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   text-decoration: none;
-  border: none;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   font-size: 1rem;
+  box-shadow: 0 10px 20px rgba(31, 111, 235, 0.18);
 }
 
 .btn:hover {
-  background-color: #52d94e;
-  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(31, 111, 235, 0.22);
 }
 
-.btn-secondary {
-  background-color: var(--secondary-color);
-}
-
-.btn-secondary:hover {
-  background-color: #2980b9;
-}
-
+.btn-secondary,
 .btn-danger {
-  background-color: #e74c3c;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--primary-dark) 100%
+  );
+  border: 1px solid rgba(23, 79, 179, 0.2);
+  color: white;
+  box-shadow: 0 10px 20px rgba(31, 111, 235, 0.18);
 }
 
+.btn-secondary:hover,
 .btn-danger:hover {
-  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(31, 111, 235, 0.22);
 }
 
 .empty-cart {
