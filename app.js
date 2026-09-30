@@ -58,7 +58,7 @@ app.use(helmet({
       scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://js.paystack.co"],
       frameSrc: ["'self'", "https://checkout.paystack.com"],
       connectSrc: ["'self'", "https://api.paystack.co"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://paystack.com"],
     },
   },
 })
