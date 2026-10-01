@@ -36,10 +36,10 @@
                                         >
                                         <div class="order-card__info">
                                             <span class="order-card__name"><%= p.product.title %></span>
-                                            <span class="order-card__meta">Qty: <%= p.quantity %> &nbsp;|&nbsp; $<%= p.product.price %> each</span>
+                                            <span class="order-card__meta">Qty: <%= p.quantity %> &nbsp;|&nbsp; ₦<%= p.product.price.toLocaleString() %> each</span>
                                         </div>
-                                        <span class="order-card__subtotal">
-                                            $<%= (p.quantity * p.product.price).toFixed(2) %>
+                                       <span class="order-card__subtotal">
+                                            ₦<%= (p.quantity * p.product.price).toLocaleString() %>
                                         </span>
                                     </li>
                                 <% }); %>
@@ -50,8 +50,8 @@
 
                         <div class="order-card__footer">
                             <span>Total:</span>
-                            <strong>
-                                $<%= order.products.reduce((sum, p) => sum + (p.quantity * p.product.price), 0).toFixed(2) %>
+                           <strong>
+                                ₦<%= order.products.reduce((sum, p) => sum + (p.quantity * p.product.price), 0).toLocaleString() %>
                             </strong>
                         </div>
 

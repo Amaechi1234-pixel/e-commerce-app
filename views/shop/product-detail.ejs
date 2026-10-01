@@ -12,7 +12,7 @@
             </div>
             <div class="product-detail__info">
                 <h1 class="product-detail__title"><%= product.title %></h1>
-                <h2 class="product-detail__price">$<%= product.price.toFixed(2) %></h2>
+                <h2 class="product-detail__price">₦<%= product.price.toLocaleString() %></h2>
                 <p class="product-detail__description"><%= product.description %></p>
                 <div class="product-detail__actions">
                     <%- include('../includes/add-to-cart.ejs') %>

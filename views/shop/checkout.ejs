@@ -13,12 +13,12 @@
         <li>
           <%= p.productId.title %> —
           <%= p.quantity %> x
-          $<%= p.productId.price %>
+          ₦<%= p.productId.price.toLocaleString() %>
         </li>
       <% }) %>
     </ul>
 
-    <h2>Total: $<%= totalSum.toFixed(2) %></h2>
+    <h2>Total: ₦<%= totalSum.toLocaleString() %></h2>
 
     <button id="order-btn" class="btn" data-amount="<%= totalSum * 100 %>" data-email="<%= userEmail %>" data-key="<%= paystackPublicKey %>">
       Order Now
