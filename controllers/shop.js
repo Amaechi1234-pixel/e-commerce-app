@@ -102,7 +102,7 @@ exports.getCart = (req, res, next) => {
   req.user
     .populate("cart.items.productId")
     .then((user) => {
-      const products = user.cart.items.filter(p => p.productId !== null); // filter out deleted products  
+      const products = user.cart.items.filter(p => p.productId !== null); 
       res.render("shop/cart", {
         path: "/cart",
         pageTitle: "Your cart",
@@ -287,15 +287,15 @@ exports.getInvoice = (req, res, next) => {
         pdfDoc
           .fontSize(14)
           .text(
-            `${prod.product.title} — ${prod.quantity} x $${prod.product.price}`
+            `${prod.product.title} — ${prod.quantity} x NGN ${prod.product.price.toLocaleString()}`
           );
-      });
+       });
 
       pdfDoc.moveDown();
       pdfDoc.text("-----------------------------------");
-      pdfDoc.fontSize(16).text(`Total: $${totalPrice.toFixed(2)}`);
+      pdfDoc.fontSize(16).text(`Total: NGN ${totalPrice.toLocaleString()}`);
 
-      pdfDoc.end(); // ✅ must call this to finish
+      pdfDoc.end(); 
     })
     .catch((err) => {
       const error = new Error(err);
