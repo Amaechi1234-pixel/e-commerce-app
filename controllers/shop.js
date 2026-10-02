@@ -119,6 +119,7 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId ? req.body.productId.trim() : "";
+  const quantity = req.body.quantity ? parseInt(req.body.quantity) : 1;
 
   if (!prodId) {
     console.log("Error: Invalid product ID");
@@ -127,7 +128,7 @@ exports.postCart = (req, res, next) => {
 
   Product.findById(prodId)
     .then((product) => {
-      return req.user.addToCart(product);
+      return req.user.addToCart(product, quantity);
     })
     .then((result) => {
       res.redirect("/cart");
