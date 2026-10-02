@@ -525,3 +525,56 @@ h1 {
     width: 100%;
   }
 }
+
+.cart__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quantity-stepper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stepper-btn {
+  background-color: var(--light-color);
+  border: none;
+  width: 32px;
+  height: 32px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.stepper-btn:hover {
+  background-color: var(--border-color);
+}
+
+.quantity-stepper .quantity-input {
+  width: 40px;
+  text-align: center;
+  border: none;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  padding: 0.4rem 0;
+  font-weight: 600;
+}
+
+.icon-btn {
+  background-color: #fdecea;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.icon-btn.delete-btn:hover {
+  background-color: #e74c3c;
+}

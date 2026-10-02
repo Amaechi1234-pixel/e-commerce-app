@@ -1,9 +1,9 @@
 <%- include('../includes/head.ejs') %>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/product.css">
-    </head>
-    
-    <body>
+</head>
+
+<body>
     <%- include('../includes/navigation.ejs') %>
     <main>
         <% if (products.length > 0) { %>
@@ -12,11 +12,27 @@
                     <li class="cart__item">
                         <h1><%= p.productId.title %></h1>
                         <div class="cart__actions">
-                            <h2>Quantity: <%= p.quantity %></h2>
+                            <form action="/cart-update-item" method="POST" class="quantity-stepper-form">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                                <input type="hidden" name="productId" value="<%= p.productId._id %>" />
+                                <div class="quantity-stepper">
+                                    <button type="button" class="stepper-btn minus">−</button>
+                                    <input
+                                        type="number"
+                                        name="quantity"
+                                        value="<%= p.quantity %>"
+                                        min="1"
+                                        max="99"
+                                        class="quantity-input"
+                                        readonly
+                                    />
+                                    <button type="button" class="stepper-btn plus">+</button>
+                                </div>
+                            </form>
                             <form action="/cart-delete-item" method="POST">
                                 <input type="hidden" value="<%= p.productId._id %>" name="productId">
                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                                <button class="btn danger" type="submit">Delete</button>
+                                <button class="icon-btn delete-btn" type="submit" aria-label="Delete">🗑</button>
                             </form>
                         </div>
                     </li>
@@ -24,21 +40,13 @@
             </ul>
             <hr>
             <div class="centered">
-                <!-- <form action="/create-order" method="POST">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-                    <button type="submit" class="btn">Order Now!</button>
-                </form> -->
                 <a href="/checkout" class="btn">Order Now!</a>
             </div>
-            
-        
-            <% } else { %>
-                <h1>No Products in Cart!</h1>
-            <%} %>
+        <% } else { %>
+            <h1>No Products in Cart!</h1>
+        <% } %>
     </main>
+    <script src="/js/cart.js"></script>
     <%- include('../includes/end.ejs') %>
-
-    </body>
-
-</head>
-
+</body>
+</html>

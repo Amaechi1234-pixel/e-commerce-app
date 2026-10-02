@@ -51,6 +51,18 @@ userSchema.methods.addToCart = function (product, quantity = 1) {
   return this.save();
 };
 
+userSchema.methods.updateCartItemQuantity = function (productId, quantity) {
+  const cartProductIndex = this.cart.items.findIndex((cp) => {
+    return cp.productId.toString() === productId.toString();
+  });
+
+  if (cartProductIndex >= 0) {
+    this.cart.items[cartProductIndex].quantity = quantity;
+  }
+
+  return this.save();
+};
+
 userSchema.methods.getCart = function () {
   return Promise.resolve(this);
 };

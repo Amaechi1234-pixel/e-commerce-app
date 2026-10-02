@@ -140,6 +140,22 @@ exports.postCart = (req, res, next) => {
     });
 };
 
+exports.postUpdateCartItem = (req, res, next) => {
+  const prodId = req.body.productId;
+  const quantity = parseInt(req.body.quantity) || 1;
+
+  req.user
+    .updateCartItemQuantity(prodId, quantity)
+    .then(() => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   req.user
