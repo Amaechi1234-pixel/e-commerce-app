@@ -166,6 +166,9 @@ p {
 
 .btn {
   display: inline-block;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   padding: 0.82rem 1.5rem;
   background: linear-gradient(
     135deg,
@@ -177,6 +180,7 @@ p {
   border: 1px solid transparent;
   border-radius: 999px;
   cursor: pointer;
+  font-family: inherit;
   font-weight: 700;
   letter-spacing: 0.02em;
   transition: all 0.25s ease;
